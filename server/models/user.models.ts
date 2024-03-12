@@ -21,6 +21,11 @@ const schema = new mongoose.Schema({
     trim: true,
     required: true
   },
+  email: {
+    type: String,
+    trim: true,
+    required: true
+  },
   refresh_token: {
     required: true,
     type: String
