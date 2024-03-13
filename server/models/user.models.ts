@@ -26,15 +26,14 @@ const schema = new mongoose.Schema({
     trim: true,
     required: true
   },
-  refresh_token: {
-    required: true,
-    type: String
-  },
   password: {
     type: String,
     required: true,
     minlength: 6
-  }
+  },
+  refresh_token: {
+    type: String
+  },
 },
 {
   timestamps: true

@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import router from "./routes";
+import connectDb from "./db";
 
 const app = express();
 
@@ -12,7 +13,9 @@ app.use(cors({
 app.use(cookieParser());
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
+
+connectDb();
 
 app.use("/", router);
 
@@ -22,8 +25,8 @@ app.use(function(req: Request, res: Response, next: NextFunction){
 
 app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
   if(err) {
-    res.status(500).json({
-      message: err.message
+    res.status(404).json({
+      message: "404 Not Found!"
     });
   } else {
     next();
