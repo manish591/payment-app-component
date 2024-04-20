@@ -2,11 +2,13 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
   user_id: {
-    type: mongoose.Types.ObjectId,
-    ref: "User"
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
   balance: {
-    type: Number
+    type: Number,
+    required: true
   }
 },{
   timestamps: true

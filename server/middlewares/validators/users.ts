@@ -50,7 +50,42 @@ async function validateLoginData(req: Request, res: Response, next: NextFunction
   }
 }
 
+async function validateEditUserProfile(req: Request, res: Response, next: NextFunction) {
+  try {
+    const schema = zod.object({
+      username: zod.string().optional(),
+      first_name: zod.string().optional(),
+      last_name: zod.string().optional()
+    });
+
+    await schema.parseAsync(req.body);
+    next();
+  } catch(err) {
+    res.status(400).json({
+      message: "invalid body"
+    });
+  }
+}
+
+async function validateTransactionAccount(req: Request, res: Response, next: NextFunction) {
+  try {
+    const schema = zod.object({
+      to: zod.string(),
+      amount: zod.number(),
+    });
+
+    await schema.parseAsync(req.body);
+    next();
+  } catch(err) {
+    res.status(200).json({
+      message: "Request body invalid"
+    });
+  }
+}
+
 export default {
   validateSignupData,
   validateLoginData,
+  validateEditUserProfile,
+  validateTransactionAccount
 };

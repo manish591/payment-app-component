@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/user.models";
+import AccountModel from "../models/account.model";
 import bcrypt from "../utils/bcrypt";
 
 
@@ -20,12 +21,17 @@ async function signup(req: Request, res: Response) {
 
     const hashedPassword = await bcrypt.hashPassword(password);
 
-    await UserModel.create({
+    const user = await UserModel.create({
       username,
       email,
       password: hashedPassword,
       first_name,
       last_name
+    });
+
+    await AccountModel.create({
+      user_id: user._id,
+      balance: Math.floor(Math.random() * 10000 + 1),
     });
 
     res.status(200).json({
@@ -70,9 +76,9 @@ async function login(req: Request, res: Response) {
       last_name: user[0].last_name
     };
 
-    const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: 3600 });
-    const refreshToken = jwt.sign({ _id: user[0]._id }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: 18000 });
-
+    const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
+    const refreshToken = jwt.sign({ _id: user[0]._id }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
+    
     await UserModel.findOneAndUpdate({ _id: user[0]._id }, { refresh_token: refreshToken });
 
     res.cookie("access_token", accessToken, {
