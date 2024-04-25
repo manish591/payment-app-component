@@ -1,9 +1,12 @@
-import './App.css';
+import './index.css';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <h1>Hello Payment app</h1>
+    <div className='font-mono'>
+      <Outlet />
+    </div>
   )
 }
 
-export default App
+export default App;
