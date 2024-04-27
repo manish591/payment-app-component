@@ -77,17 +77,10 @@ async function login(req: Request, res: Response) {
     };
 
     const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
-    const refreshToken = jwt.sign({ _id: user[0]._id }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
-    
-    await UserModel.findOneAndUpdate({ _id: user[0]._id }, { refresh_token: refreshToken });
 
     res.cookie("access_token", accessToken, {
       httpOnly: true,
       secure: true,
-    });
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: true
     });
 
     res.status(200).json({
@@ -107,12 +100,6 @@ function signout(req: Request, res: Response) {
     httpOnly: true,
     secure: true
   });
-
-  res.clearCookie("refresh_token", {
-    httpOnly: true,
-    secure: true
-  });
-
   res.status(200).json({
     message: "Logout successfully",
   });
