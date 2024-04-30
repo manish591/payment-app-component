@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../../components/button";
 import { Input } from "../../components/input";
 import { BASE_URL } from "../../constants/url";
@@ -77,7 +78,9 @@ export function DashBoard() {
                   </div>
                   <h3 className="text-xl">{first_name} {last_name}</h3>
                 </section>
-                <Button className="bg-black py-2 px-4 rounded-md text-white">Send Money</Button>
+                <Link to={`/send?to=${_id}&name=${first_name}`}>
+                  <Button className="bg-black py-2 px-4 rounded-md text-white">Send Money</Button>
+                </Link>
             </div>
             )
           })

@@ -77,7 +77,7 @@ async function validateTransactionAccount(req: Request, res: Response, next: Nex
     await schema.parseAsync(req.body);
     next();
   } catch(err) {
-    res.status(200).json({
+    res.status(400).json({
       message: "Request body invalid"
     });
   }
