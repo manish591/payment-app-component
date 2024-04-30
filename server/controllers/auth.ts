@@ -81,6 +81,7 @@ async function login(req: Request, res: Response) {
     res.cookie("access_token", accessToken, {
       httpOnly: true,
       secure: true,
+      sameSite: "none"
     });
 
     res.status(200).json({

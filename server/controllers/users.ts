@@ -4,7 +4,7 @@ import UserModel from "../models/user.models";
 async function getSelfData(req: Request, res: Response) {
   try {
     const user_id = res.locals.user_id;
-    const userData = await UserModel.findOne({ _id: user_id }).exec();
+    const userData = await UserModel.findOne({ _id: user_id }, "first_name last_name username").exec();
 
     if(!userData) {
       res.status(400).json({
@@ -36,7 +36,7 @@ async function getAllUsers(req: Request, res: Response) {
       last_name: user.last_name,
       _id: user._id,
       username: user.username
-    }));
+    })).filter(user => user._id != res.locals.user_id);
 
     res.status(200).json({
       message: "Users returned successfully",
